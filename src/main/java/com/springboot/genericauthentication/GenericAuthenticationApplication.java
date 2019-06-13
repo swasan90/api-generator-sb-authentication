@@ -1,5 +1,7 @@
 package com.springboot.genericauthentication;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.springframework.boot.SpringApplication;
@@ -8,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.springboot.genericauthentication.exception.IOCustomException;
 
 @SpringBootApplication
 public class GenericAuthenticationApplication {
@@ -25,17 +29,23 @@ public class GenericAuthenticationApplication {
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	/**
+	 * Bean configuration for Java Mail send
+	 * @return
+	 * @throws IOCustomException
+	 */
 	
 	@Bean
-	public JavaMailSender getJavaMailSender() {
+	public JavaMailSender getJavaMailSender() throws IOCustomException {
 		
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.gmail.com");
-		mailSender.setPort(587);
+		Properties apProps = getMailAppProperties();
+		mailSender.setHost(apProps.getProperty("spring.mail.host"));
+		mailSender.setPort(Integer.parseInt(apProps.getProperty("spring.mail.port")));
 		
 		//Credentials
-		mailSender.setUsername("technojuggernaut@gmail.com");
-		mailSender.setPassword("asd123qwe456");
+		mailSender.setUsername(apProps.getProperty("spring.mail.username"));
+		mailSender.setPassword(apProps.getProperty("spring.mail.password"));
 		
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol","smtp");
@@ -45,6 +55,23 @@ public class GenericAuthenticationApplication {
 		
 		
 		return mailSender;
+	}
+	/**
+	 * Function to get application properties for mail 
+	 * @return
+	 * @throws IOCustomException
+	 */
+	private Properties getMailAppProperties() throws IOCustomException {
+		String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+		String appConfigPath = rootPath+"application.properties";
+		Properties props = new Properties();
+		try {
+			props.load(new FileInputStream(appConfigPath));
+		} catch (IOException e) {
+			 throw new IOCustomException(e.getMessage());
+		}
+		return props;
+		
 	}
 	
 }
