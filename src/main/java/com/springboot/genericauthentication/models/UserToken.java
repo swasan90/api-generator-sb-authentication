@@ -37,5 +37,11 @@ public class UserToken {
 	
 	private Date expirationDate;
 	
+	public UserToken(String token, User user,Date expDate) {
+		this.token = token;
+		this.user = user;
+		this.expirationDate = expDate;
+	}
+	
 	
 }
