@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.genericauthentication.exception.EntityFoundException;
+import com.springboot.genericauthentication.exception.MailErrorException;
 import com.springboot.genericauthentication.models.ResponseMessage;
 import com.springboot.genericauthentication.models.User;
 import com.springboot.genericauthentication.service.AuthenticationService;
@@ -33,7 +34,7 @@ public class RegistrationController {
 	 
 	
 	@PostMapping(value="/register",consumes="application/json",produces="application/json")
-	public ResponseEntity<ResponseMessage> registerAccount(@Valid @RequestBody User user) throws EntityFoundException{		
+	public ResponseEntity<ResponseMessage> registerAccount(@Valid @RequestBody User user) throws EntityFoundException, MailErrorException{		
 		ResponseMessage res = new ResponseMessage();
 		if( authService.registerUser(user)) {	
 			logger.info("Successfully created user account");
