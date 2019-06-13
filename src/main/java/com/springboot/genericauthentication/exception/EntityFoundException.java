@@ -1,5 +1,5 @@
 /**
- * Exception class to raise a user defined exception
+ * Exception class to catch if an user already exists.
  */
 package com.springboot.genericauthentication.exception;
 
