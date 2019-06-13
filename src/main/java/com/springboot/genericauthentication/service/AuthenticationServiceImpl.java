@@ -3,6 +3,9 @@
  */
 package com.springboot.genericauthentication.service;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -11,16 +14,21 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.sendgrid.Content;
+import com.sendgrid.Email;
+import com.sendgrid.Mail;
+import com.sendgrid.Request;
+import com.sendgrid.SendGrid;
 import com.springboot.genericauthentication.email.EmailService;
 import com.springboot.genericauthentication.exception.EntityFoundException;
 import com.springboot.genericauthentication.exception.MailErrorException;
-import com.springboot.genericauthentication.models.MailObject;
 import com.springboot.genericauthentication.models.User;
 import com.springboot.genericauthentication.models.UserToken;
 import com.springboot.genericauthentication.repository.AuthenticationRepository;
@@ -42,17 +50,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private UserTokenRepository userTokenRepo;
 	
 	@Autowired
-	private EmailService emailService;
+	private EmailService emailService;	 
 	
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private BCryptPasswordEncoder bCryptPasswordEncoder; 
+	
+	@Value("${sendgrid.api.key}")
+	private String apiKey;
+	
+	@Value("${sendgrid.from.mail}")
+	private Email from;
 	
 	public AuthenticationServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 	
+	
+	/**	 
+	 *
+	 * Function to register the user , generating token and sending mail to the user with token
+	 * @param user
+	 * @return boolean
+	 */
+	
 	@Override
 	@Transactional
-	public boolean registerUser(User user) throws EntityFoundException, MailErrorException{
+	public boolean registerUser(User user) throws EntityFoundException, IOException, MailErrorException{
 		User usr = authRepo.findByEmail(user.getEmail());
 		try {
 			if(usr ==null) {
@@ -62,12 +84,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				logger.info("Created User account in database");
 				
 				//Generating token for the new user
-				String tokenUrl = generateTokenForNewUser(newUser);
+				URI tokenUrl = generateTokenForNewUser(newUser);
 				logger.info("Generated token");
 				
 				//Sending email to the new user with the token for more authentication
-				MailObject mailObj = constructMailBody(newUser,tokenUrl);
-				emailService.sendEmailMessage(mailObj.getTo(), mailObj.getSubject(), mailObj.getMessage());
+				Mail mailObj = constructMailBody(newUser,tokenUrl);
+				Request request =  new Request();				
+				SendGrid sg = new SendGrid(apiKey);
+				emailService.sendEmailMessage(mailObj,request,sg);
+				logger.info("Mail sent");
 				
 				return true;
 			}else {
@@ -80,8 +105,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		} 
 		 
 	}
-	
-	private String generateTokenForNewUser(User user) {
+	/**
+	 * Function to generate token for the user
+	 * @param user
+	 * @return String
+	 */
+	private URI generateTokenForNewUser(User user) {
 		String token = String.valueOf(UUID.randomUUID()).replace("-", "");
 		Instant expirationDate = Instant.now().plus(Duration.ofHours(24));		
 		UserToken userToken = new UserToken(token,user,Date.from(expirationDate));
@@ -89,18 +118,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		return constructTokenUrl(token);
 	}
 	
-	private String constructTokenUrl(String token) {
-		final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-		StringBuffer sb = new StringBuffer();
-		sb.append(baseUrl).append("token=").append(token);
-		return sb.toString();		
+	/**
+	 * Function to construct url with token for the new user
+	 * @param token
+	 * @return String
+	 * @throws MalformedURLException 
+	 */
+	private URI constructTokenUrl(String token){
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().queryParam("token", token).build().toUri();
+		return uri;		
 	}
 	
-	private MailObject constructMailBody(User user,String tokenUrl) {
-		String subject = "Activate your account on your registration";
-		String body = " Welcome"+user.getFirstName()+",\n\n You are receiving this email because you have registered in our site.\n Please click on the below link to activate your account.\n"+tokenUrl+"\n\nKindly note that this link will be activated only for 24 hours from now.";
-		return new MailObject(user.getEmail(),subject,body);		
-	 
+	/**
+	 * Function to construct mail object 
+	 * @param user
+	 * @param tokenUrl
+	 * @return Mail
+	 */
+	private Mail constructMailBody(User user,URI tokenUrl) {	
+		String subject = "Activate your account on your registration";		
+		String body = " Welcome "+user.getFirstName()+",<br/><p>You are receiving this email because you have registered in our site.\n\n Please click on the below link to activate your account.<br/>"+tokenUrl+
+				"<p>Kindly note that this link will be activated only for 24 hours from now.<br/><br/><br/>Regards,<br/> Admin Team</p>";
+		Content content = new Content("text/html",body);
+		return new Mail(from,subject,new Email(user.getEmail()),content);
 	}
 
 	 
