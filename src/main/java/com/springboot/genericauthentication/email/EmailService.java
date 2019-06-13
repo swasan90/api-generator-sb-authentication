@@ -5,11 +5,15 @@ package com.springboot.genericauthentication.email;
 
 import com.springboot.genericauthentication.exception.MailErrorException;
 
+import java.io.IOException;
+
+import com.sendgrid.*;
+
 /**
  * @author swathy
  *
  */
 public interface EmailService {
 
-	void sendEmailMessage(String to,String subject,String text ) throws MailErrorException;
+	void sendEmailMessage(Mail mail,Request request,SendGrid sendgrid) throws IOException,MailErrorException;
 }

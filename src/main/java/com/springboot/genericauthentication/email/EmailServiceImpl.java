@@ -3,13 +3,18 @@
  */
 package com.springboot.genericauthentication.email;
 
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
+ 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
+ 
 import com.springboot.genericauthentication.exception.MailErrorException;
+import com.springboot.genericauthentication.service.AuthenticationServiceImpl;
+import com.sendgrid.*;
 
 /**
  * @author swathy
@@ -18,19 +23,20 @@ import com.springboot.genericauthentication.exception.MailErrorException;
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
 	
-	@Autowired
-	public JavaMailSender emailSender;
+	private Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
 
 	@Override
-	public void sendEmailMessage(String to, String subject, String text) throws MailErrorException {
+	public void sendEmailMessage(Mail mail, Request req,SendGrid sendgrid) throws IOException, MailErrorException {
 		 try {
-			 SimpleMailMessage message = new SimpleMailMessage();
-			 message.setTo(to);
-			 message.setSubject(subject);
-			 message.setText(text);
-			 
-			 emailSender.send(message);
-		 }catch(MailException exception) {
+			 req.setMethod(Method.POST);
+			 req.setEndpoint("mail/send");
+			 req.setBody(mail.build());			 
+			 Response res = sendgrid.api(req);
+			 System.out.println(res.getStatusCode());
+		     System.out.println(res.getBody());
+		     System.out.println(res.getHeaders());
+		     logger.info("Registration mail sent");		     
+		 }catch(IOException exception) {
 			 throw new MailErrorException(exception.getMessage());
 		 }		
 	}
