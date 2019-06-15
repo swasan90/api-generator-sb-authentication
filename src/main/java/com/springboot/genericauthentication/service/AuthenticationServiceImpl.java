@@ -111,9 +111,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	 * @return String
 	 */
 	private URI generateTokenForNewUser(User user) {
-		String token = String.valueOf(UUID.randomUUID()).replace("-", "");
-		Instant expirationDate = Instant.now().plus(Duration.ofHours(24));		
-		UserToken userToken = new UserToken(token,user,Date.from(expirationDate));
+		String token = String.valueOf(UUID.randomUUID()).replace("-", "");		 	
+		Instant expirationDate = Instant.now().plus(Duration.ofHours(24));			 
+		UserToken userToken = new UserToken(token,user,expirationDate);
 		userTokenRepo.save(userToken);
 		return constructTokenUrl(token);
 	}
