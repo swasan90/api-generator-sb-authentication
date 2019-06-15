@@ -16,4 +16,6 @@ import com.springboot.genericauthentication.models.User;
 public interface AuthenticationRepository extends JpaRepository<User,Long> {
 	
 	User findByEmail(String email);
+	
+	User findById(long id);
 }
