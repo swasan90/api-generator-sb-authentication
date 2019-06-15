@@ -5,6 +5,7 @@ package com.springboot.genericauthentication.models;
 
  
 
+import java.time.Instant;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -35,9 +36,12 @@ public class UserToken {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	private Date expirationDate;
+	private Instant expirationDate;
 	
-	public UserToken(String token, User user,Date expDate) {
+	public UserToken() {};
+	
+	public UserToken(String token, User user,Instant expDate) {
+		super();
 		this.token = token;
 		this.user = user;
 		this.expirationDate = expDate;
