@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
- 
+
+import com.springboot.genericauthentication.auth.service.AuthenticationServiceImpl;
 import com.springboot.genericauthentication.exception.MailErrorException;
-import com.springboot.genericauthentication.service.AuthenticationServiceImpl;
 import com.sendgrid.*;
 
 /**
