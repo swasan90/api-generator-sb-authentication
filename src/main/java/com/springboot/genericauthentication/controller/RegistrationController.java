@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.genericauthentication.auth.service.AuthenticationService;
 import com.springboot.genericauthentication.exception.EntityFoundException;
 import com.springboot.genericauthentication.exception.MailErrorException;
 import com.springboot.genericauthentication.models.ResponseMessage;
 import com.springboot.genericauthentication.models.User;
-import com.springboot.genericauthentication.service.AuthenticationService;
 import com.springboot.genericauthentication.token.service.TokenService;
 
 /**
