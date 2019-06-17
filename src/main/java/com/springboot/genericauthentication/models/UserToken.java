@@ -6,7 +6,6 @@ package com.springboot.genericauthentication.models;
  
 
 import java.time.Instant;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
@@ -32,15 +33,16 @@ public class UserToken {
 	
 	private String token;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
-	private User user;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="user_id")	 
+	private AuthUser user;
 	
 	private Instant expirationDate;
 	
 	public UserToken() {};
 	
-	public UserToken(String token, User user,Instant expDate) {
+	public UserToken(String token, AuthUser user,Instant expDate) {
 		super();
 		this.token = token;
 		this.user = user;
