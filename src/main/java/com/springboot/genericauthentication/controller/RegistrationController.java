@@ -22,7 +22,7 @@ import com.springboot.genericauthentication.auth.service.AuthenticationService;
 import com.springboot.genericauthentication.exception.EntityFoundException;
 import com.springboot.genericauthentication.exception.MailErrorException;
 import com.springboot.genericauthentication.models.ResponseMessage;
-import com.springboot.genericauthentication.models.User;
+import com.springboot.genericauthentication.models.AuthUser;
 import com.springboot.genericauthentication.token.service.TokenService;
 
 /**
@@ -55,7 +55,7 @@ public class RegistrationController {
 	 * @throws IOException
 	 */
 	@PostMapping(value="/register",consumes="application/json",produces="application/json")
-	public ResponseEntity<ResponseMessage> registerAccount(@Valid @RequestBody User user) throws EntityFoundException, MailErrorException,IOException{		 
+	public ResponseEntity<ResponseMessage> registerAccount(@Valid @RequestBody AuthUser user) throws EntityFoundException, MailErrorException,IOException{		 
 		if( authService.registerUser(user)) {	
 			logger.info("Successfully created user account");
 			return new ResponseEntity<ResponseMessage>( this.res.setMessage("Successfully created account",HttpStatus.CREATED),HttpStatus.CREATED); 
@@ -80,5 +80,6 @@ public class RegistrationController {
 			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Your token was expired.Kindly register again",HttpStatus.UNAUTHORIZED),HttpStatus.UNAUTHORIZED);
 		}
 	}
+	 
 
 }
