@@ -19,10 +19,9 @@ import lombok.Data;
 @Entity
 public class SecurityQuestion {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
-	private String securityQuestion; 
-	
-	
+
+	private String securityQuestion;
+
 }

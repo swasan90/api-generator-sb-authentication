@@ -15,5 +15,7 @@ import com.springboot.genericauthentication.models.AuthUser;
  */
 public interface AuthenticationService {
 	
-	boolean registerUser(AuthUser user) throws EntityFoundException,MailErrorException, IOException;
+	// Function declaration to register user.
+
+	boolean registerUser(AuthUser user) throws EntityFoundException, MailErrorException, IOException;
 }

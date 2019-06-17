@@ -18,22 +18,22 @@ import javax.validation.Payload;
  */
 @Documented
 @Constraint(validatedBy = PasswordMatchValidator.class)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PasswordMatchConstraint {
 	String message() default "Invalid password";
-	
+
 	Class<?>[] groups() default {};
-	
+
 	Class<? extends Payload>[] payload() default {};
-	
+
 	String field();
-	
+
 	String fieldMatch();
-	
+
 	@Target({ ElementType.TYPE })
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface List {
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface List {
 		PasswordMatchConstraint[] value();
-    }
+	}
 }

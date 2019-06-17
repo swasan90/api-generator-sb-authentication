@@ -1,5 +1,5 @@
 /**
- * 
+ * Interface to declare the user token methods.
  */
 package com.springboot.genericauthentication.repository;
 
@@ -13,8 +13,9 @@ import com.springboot.genericauthentication.models.UserToken;
  *
  */
 @Repository
-public interface UserTokenRepository extends JpaRepository<UserToken,Long> {
+public interface UserTokenRepository extends JpaRepository<UserToken, Long> {
 	
+	//Function declaration to find usertoken object by token
 	UserToken findByToken(String token);
 
 }

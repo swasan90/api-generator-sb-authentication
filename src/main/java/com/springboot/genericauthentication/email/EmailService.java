@@ -15,5 +15,6 @@ import com.sendgrid.*;
  */
 public interface EmailService {
 
-	void sendEmailMessage(Mail mail,Request request,SendGrid sendgrid) throws IOException,MailErrorException;
+	// Function declaration to send email message
+	void sendEmailMessage(Mail mail, Request request, SendGrid sendgrid) throws IOException, MailErrorException;
 }

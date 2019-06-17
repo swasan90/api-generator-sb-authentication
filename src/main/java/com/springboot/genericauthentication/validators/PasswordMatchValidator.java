@@ -1,5 +1,5 @@
 /**
- * 
+ * Class to implement if the password and confirm password matches. (Custom Annotation)
  */
 package com.springboot.genericauthentication.validators;
 
@@ -12,13 +12,12 @@ import org.springframework.beans.BeanWrapperImpl;
  * @author swathy
  *
  */
-public class PasswordMatchValidator implements ConstraintValidator<PasswordMatchConstraint,Object> {
-	
+public class PasswordMatchValidator implements ConstraintValidator<PasswordMatchConstraint, Object> {
+
 	private String password;
-	
+
 	private String passwordMatch;
-	
-	
+
 	@Override
 	public void initialize(PasswordMatchConstraint constraintAnnotation) {
 		this.password = constraintAnnotation.field();
@@ -27,16 +26,15 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
 
 	@Override
 	public boolean isValid(Object value, ConstraintValidatorContext context) {
-		
+
 		Object passwordValue = new BeanWrapperImpl(value).getPropertyValue(password);
-		Object passwordMatchValue = new BeanWrapperImpl(value).getPropertyValue(passwordMatch);    
-		
-		
-		if(passwordValue != null) {				 
+		Object passwordMatchValue = new BeanWrapperImpl(value).getPropertyValue(passwordMatch);
+
+		if (passwordValue != null) {
 			return passwordValue.equals(passwordMatchValue);
-		}else {						 
+		} else {
 			return passwordValue == null;
-		}  
+		}
 	}
 
 }

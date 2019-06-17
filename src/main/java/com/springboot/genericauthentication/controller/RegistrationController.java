@@ -29,57 +29,66 @@ import com.springboot.genericauthentication.token.service.TokenService;
  * @author swathy
  *
  */
-@RestController 
+@RestController
 public class RegistrationController {
-	
+
 	private Logger logger = LoggerFactory.getLogger(RegistrationController.class);
-	
+
 	@Autowired
 	private AuthenticationService authService;
-	
+
 	@Autowired
 	private TokenService tokenService;
-	
+
 	private ResponseMessage res;
-	
+
 	public RegistrationController() {
 		this.res = new ResponseMessage();
 	}
-	 
+
 	/**
 	 * Function to register a user
+	 * 
 	 * @param user
 	 * @return
 	 * @throws EntityFoundException
 	 * @throws MailErrorException
 	 * @throws IOException
 	 */
-	@PostMapping(value="/register",consumes="application/json",produces="application/json")
-	public ResponseEntity<ResponseMessage> registerAccount(@Valid @RequestBody AuthUser user) throws EntityFoundException, MailErrorException,IOException{		 
-		if( authService.registerUser(user)) {	
+	@PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<ResponseMessage> registerAccount(@Valid @RequestBody AuthUser user)
+			throws EntityFoundException, MailErrorException, IOException {
+		if (authService.registerUser(user)) {
 			logger.info("Successfully created user account");
-			return new ResponseEntity<ResponseMessage>( this.res.setMessage("Successfully created account",HttpStatus.CREATED),HttpStatus.CREATED); 
-		}else {
+			return new ResponseEntity<ResponseMessage>(
+					this.res.setMessage("Successfully created account", HttpStatus.CREATED), HttpStatus.CREATED);
+		} else {
 			logger.info("Unable to create user account");
-			return new ResponseEntity<ResponseMessage>( this.res.setMessage("Email id exist.Cannot creat account",HttpStatus.BAD_REQUEST),HttpStatus.BAD_REQUEST); 
-		}  
+			return new ResponseEntity<ResponseMessage>(
+					this.res.setMessage("Email id exist.Cannot creat account", HttpStatus.BAD_REQUEST),
+					HttpStatus.BAD_REQUEST);
+		}
 	}
-	
+
 	/**
 	 * Function to activate account upon clicking the activation link
+	 * 
 	 * @param token
 	 * @return
 	 */
 	@GetMapping("/")
-	public ResponseEntity<ResponseMessage> activateAccount(@Valid @RequestParam(name="token") String token){
-		if(tokenService.validateToken(token)) {
+	public ResponseEntity<ResponseMessage> activateAccount(@Valid @RequestParam(name = "token") String token) {
+		if (tokenService.validateToken(token)) {
 			logger.info("Successfully validated token");
-			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Your account has been activated.Please login with your credentials",HttpStatus.OK),HttpStatus.OK);
-		}else {
-			logger.info("Unable to activate user account" );
-			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Your token was expired.Kindly register again",HttpStatus.UNAUTHORIZED),HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<ResponseMessage>(this.res
+					.setMessage("Your account has been activated.Please login with your credentials", HttpStatus.OK),
+					HttpStatus.OK);
+		} else {
+			logger.info("Unable to activate user account");
+			return new ResponseEntity<ResponseMessage>(
+					this.res.setMessage("Your token was expired.Kindly register again", HttpStatus.UNAUTHORIZED),
+					HttpStatus.UNAUTHORIZED);
 		}
 	}
-	 
 
 }

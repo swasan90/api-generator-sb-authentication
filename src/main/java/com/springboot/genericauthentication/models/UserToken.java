@@ -3,8 +3,6 @@
  */
 package com.springboot.genericauthentication.models;
 
- 
-
 import java.time.Instant;
 
 import javax.persistence.Entity;
@@ -26,28 +24,27 @@ import lombok.Data;
 @Entity
 @Data
 public class UserToken {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
-	
+
 	private String token;
-	
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="user_id")	 
+	@JoinColumn(name = "user_id")
 	private AuthUser user;
-	
+
 	private Instant expirationDate;
-	
-	public UserToken() {};
-	
-	public UserToken(String token, AuthUser user,Instant expDate) {
+
+	public UserToken() {
+	};
+
+	public UserToken(String token, AuthUser user, Instant expDate) {
 		super();
 		this.token = token;
 		this.user = user;
 		this.expirationDate = expDate;
 	}
-	
-	
+
 }

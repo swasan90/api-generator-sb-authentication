@@ -1,7 +1,7 @@
 /**
- * 
+ * Class to implement token service methods
  */
-package com.springboot.genericauthentication.token.service; 
+package com.springboot.genericauthentication.token.service;
 
 import java.time.Instant;
 
@@ -19,43 +19,46 @@ import com.springboot.genericauthentication.repository.UserTokenRepository;
  */
 @Service("tokenService")
 public class TokenServiceImpl implements TokenService {
-	
+
 	@Autowired
 	private UserTokenRepository userTokenRepo;
-	
+
 	@Autowired
 	private AuthenticationRepository authRepo;
-
+	
+	/***
+	 * Function to validate user's token.
+	 */
 	@Override
 	public boolean validateToken(String token) {
-		if(token !=null) {
+		if (token != null) {
 			UserToken userToken = userTokenRepo.findByToken(token);
-			return checkTokenExpirationDate(userToken);			
+			return checkTokenExpirationDate(userToken);
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Function to check token expiration date .
+	 * 
 	 * @param userToken
 	 * @return boolean
 	 */
 	private boolean checkTokenExpirationDate(UserToken userToken) {
-		if(userToken !=null) {
-			Instant current = Instant.now();			
-			if(userToken.getExpirationDate().isAfter(current)) {
-				AuthUser user  = authRepo.findById(userToken.getUser().getId());
-				 if(user!=null) {
-					 user.setEnabled(true);
-					 user.setStatus(true);
-					 authRepo.save(user);
-					 return true;
-				 }			
+		if (userToken != null) {
+			Instant current = Instant.now();
+			if (userToken.getExpirationDate().isAfter(current)) {
+				AuthUser user = authRepo.findById(userToken.getUser().getId());
+				if (user != null) {
+					user.setEnabled(true);
+					user.setStatus(true);
+					authRepo.save(user);
+					return true;
+				}
 			}
 		}
 		return false;
-		
+
 	}
-	
 
 }

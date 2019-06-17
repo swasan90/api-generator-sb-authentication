@@ -1,5 +1,5 @@
 /**
- * 
+ * Class to define the configuration methods
  */
 package com.springboot.genericauthentication.securityConfig;
 
@@ -29,55 +29,57 @@ import com.springboot.genericauthentication.user.service.UserDetailsServiceImpl;
 @EnableWebSecurity
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	private UserDetailsServiceImpl userDetailsService;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	public SpringSecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder ) {
+
+	public SpringSecurityConfig(UserDetailsServiceImpl userDetailsService,
+			BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.userDetailsService = userDetailsService;
 	}
 	
+	
 	@Override
-	public void configure(AuthenticationManagerBuilder auth) throws Exception{
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 	}
-	
+	 
+	/**
+	 * Function to implement the rules to allow the http url's. 
+	 */
 	@Override
-	protected void configure(HttpSecurity http) throws Exception
-    {
-		http
-			.cors()
-			.and()
-			.csrf().disable()
-			.authorizeRequests()
-			.antMatchers(HttpMethod.GET,"/").permitAll()			 
-			.antMatchers(HttpMethod.POST,SIGN_UP_URL).permitAll()
-			.antMatchers(HttpMethod.GET,SIGN_UP_URL).permitAll()			
-			.anyRequest().authenticated().and()
-			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-	        .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		
-		http.headers().frameOptions().disable();	
-		
-    }
-	
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.GET, "/").permitAll()
+				.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll().antMatchers(HttpMethod.GET, SIGN_UP_URL)
+				.permitAll().anyRequest().authenticated().and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+				.addFilter(new JWTAuthorizationFilter(authenticationManager())).sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+		http.headers().frameOptions().disable();
+
+	}
+
+	/**
+	 * Function to define the cors filter setting.
+	 * @return
+	 */
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:4200");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("OPTIONS");
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("PUT");
-        config.addAllowedMethod("DELETE");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-		
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedOrigin("http://localhost:4200");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("OPTIONS");
+		config.addAllowedMethod("GET");
+		config.addAllowedMethod("POST");
+		config.addAllowedMethod("PUT");
+		config.addAllowedMethod("DELETE");
+		source.registerCorsConfiguration("/**", config);
+		return new CorsFilter(source);
+
 	}
 
 }

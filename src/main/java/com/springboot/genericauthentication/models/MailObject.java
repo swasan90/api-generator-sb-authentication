@@ -12,21 +12,22 @@ import lombok.Data;
  * @author swathy
  *
  */
- @Data
+@Data
 public class MailObject {
-	
+
 	private String subject;
-	
+
 	private String message;
-	
+
 	@Email
-	@NotBlank(message="Email id is mandatory")	
+	@NotBlank(message = "Email id is mandatory")
 	private String to;
-	
-	public MailObject() {};
-	
-	public MailObject(String to,String subject,String message) {
-		this.to =to;
+
+	public MailObject() {
+	};
+
+	public MailObject(String to, String subject, String message) {
+		this.to = to;
 		this.subject = subject;
 		this.message = message;
 	}

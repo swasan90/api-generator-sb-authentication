@@ -33,44 +33,45 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
  *
  */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-	
+
 	private AuthenticationManager authenticationManager;
-	
+
 	public JWTAuthenticationFilter(AuthenticationManager authManager) {
 		this.authenticationManager = authManager;
 	}
 	
+	/**
+	 * Function to  attempt the authentication and returns the authenticated object.
+	 * @param HttpServletRequest, HttpServletResponse
+	 * @return authentication
+	 */
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest req,HttpServletResponse res) throws AuthenticationException{
-	
-		try {
-            AuthUser creds = new ObjectMapper()
-                    .readValue(req.getInputStream(), AuthUser.class);
+	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
+			throws AuthenticationException {
 
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            creds.getEmail(),
-                            creds.getPassword(),
-                            new ArrayList<>())
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }		 
-		
+		try {
+			AuthUser creds = new ObjectMapper().readValue(req.getInputStream(), AuthUser.class);
+
+			return authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 	
+	/**
+	 * Function to create token for the user upon successful authentication and adds the token in response header along with token prefix.
+	 * @param HttpServletRequest, HttpServletResponse,FilterChain,Authentication
+	 * 
+	 */
 	@Override
-	protected void successfulAuthentication(HttpServletRequest req,
-            HttpServletResponse res,
-            FilterChain chain,
-            Authentication auth) throws IOException, ServletException {
-		 
-		String token = JWT.create()
-		.withSubject(((User) auth.getPrincipal()).getUsername())
-		.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-		.sign(HMAC512(SECRET.getBytes()));
+	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
+			Authentication auth) throws IOException, ServletException {
+
+		String token = JWT.create().withSubject(((User) auth.getPrincipal()).getUsername())
+				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).sign(HMAC512(SECRET.getBytes()));
 		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
 	}
-	
 
 }
