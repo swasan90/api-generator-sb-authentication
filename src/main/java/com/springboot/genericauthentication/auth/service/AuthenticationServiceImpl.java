@@ -29,7 +29,7 @@ import com.sendgrid.SendGrid;
 import com.springboot.genericauthentication.email.EmailService;
 import com.springboot.genericauthentication.exception.EntityFoundException;
 import com.springboot.genericauthentication.exception.MailErrorException;
-import com.springboot.genericauthentication.models.User;
+import com.springboot.genericauthentication.models.AuthUser;
 import com.springboot.genericauthentication.models.UserToken;
 import com.springboot.genericauthentication.repository.AuthenticationRepository;
 import com.springboot.genericauthentication.repository.UserTokenRepository;
@@ -74,11 +74,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	
 	@Override
 	@Transactional
-	public boolean registerUser(User user) throws EntityFoundException, IOException, MailErrorException{
-		User usr = authRepo.findByEmail(user.getEmail());
+	public boolean registerUser(AuthUser user) throws EntityFoundException, IOException, MailErrorException{
+		AuthUser usr = authRepo.findByEmail(user.getEmail());
 		try {
 			if(usr ==null) {
-				User newUser = new User(user.getFirstName(),user.getLastName(),user.getEmail(),bCryptPasswordEncoder.encode(user.getPassword()));
+				AuthUser newUser = new AuthUser(user.getFirstName(),user.getLastName(),user.getEmail(),bCryptPasswordEncoder.encode(user.getPassword()));
 				// Creating new user
 				authRepo.save(newUser);
 				logger.info("Created User account in database");
@@ -110,7 +110,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	 * @param user
 	 * @return String
 	 */
-	private URI generateTokenForNewUser(User user) {
+	private URI generateTokenForNewUser(AuthUser user) {
 		String token = String.valueOf(UUID.randomUUID()).replace("-", "");		 	
 		Instant expirationDate = Instant.now().plus(Duration.ofHours(24));			 
 		UserToken userToken = new UserToken(token,user,expirationDate);
@@ -135,7 +135,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	 * @param tokenUrl
 	 * @return Mail
 	 */
-	private Mail constructMailBody(User user,URI tokenUrl) {	
+	private Mail constructMailBody(AuthUser user,URI tokenUrl) {	
 		String subject = "Activate your account on your registration";		
 		String body = " Welcome "+user.getFirstName()+",<br/><p>You are receiving this email because you have registered in our site.\n\n Please click on the below link to activate your account.<br/>"+tokenUrl+
 				"<p>Kindly note that this link will be activated only for 24 hours from now.<br/><br/><br/>Regards,<br/> Admin Team</p>";

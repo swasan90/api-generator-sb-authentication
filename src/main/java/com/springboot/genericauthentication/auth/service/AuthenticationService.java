@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import com.springboot.genericauthentication.exception.EntityFoundException;
 import com.springboot.genericauthentication.exception.MailErrorException;
-import com.springboot.genericauthentication.models.User;
+import com.springboot.genericauthentication.models.AuthUser;
 
 /**
  * @author swathy
@@ -15,5 +15,5 @@ import com.springboot.genericauthentication.models.User;
  */
 public interface AuthenticationService {
 	
-	boolean registerUser(User user) throws EntityFoundException,MailErrorException, IOException;
+	boolean registerUser(AuthUser user) throws EntityFoundException,MailErrorException, IOException;
 }
