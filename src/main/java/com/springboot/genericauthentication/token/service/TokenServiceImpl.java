@@ -8,7 +8,7 @@ import java.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springboot.genericauthentication.models.User;
+import com.springboot.genericauthentication.models.AuthUser;
 import com.springboot.genericauthentication.models.UserToken;
 import com.springboot.genericauthentication.repository.AuthenticationRepository;
 import com.springboot.genericauthentication.repository.UserTokenRepository;
@@ -44,7 +44,7 @@ public class TokenServiceImpl implements TokenService {
 		if(userToken !=null) {
 			Instant current = Instant.now();			
 			if(userToken.getExpirationDate().isAfter(current)) {
-				User user  = authRepo.findById(userToken.getUser().getId());
+				AuthUser user  = authRepo.findById(userToken.getUser().getId());
 				 if(user!=null) {
 					 user.setEnabled(true);
 					 user.setStatus(true);
