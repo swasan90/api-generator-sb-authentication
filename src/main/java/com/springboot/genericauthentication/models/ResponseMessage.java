@@ -3,8 +3,6 @@
  */
 package com.springboot.genericauthentication.models;
 
-import org.springframework.http.HttpStatus;
-
 /**
  * @author swathy
  *
@@ -13,35 +11,30 @@ import org.springframework.http.HttpStatus;
 public class ResponseMessage {
 
 	private String message;
-
-	private HttpStatus status;
+	
+	private boolean status;
 
 	public ResponseMessage() {
 
 	}
 
-	public ResponseMessage setMessage(String message, HttpStatus status) {
-		this.message = message;
-		this.status = status;
+	public ResponseMessage setMessage(String message) {
+		this.message = message;		 
 		return this;
+	}
+	
+	public ResponseMessage setStatus(boolean status) {
+		 this.status = status;		
+		 return this;
+		
+	}
+	
+	public boolean getStatus() {
+		return status;
 	}
 
 	public String getMessage() {
 		return message;
-	}
-
-	public ResponseMessage setMessage(String message) {
-		this.message = message;
-		return this;
-
-	}
-
-	public HttpStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(HttpStatus status) {
-		this.status = status;
 	}
 
 }
