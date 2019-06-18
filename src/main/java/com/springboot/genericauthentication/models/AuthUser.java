@@ -20,12 +20,11 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
+ 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.genericauthentication.validators.PasswordMatchConstraint;
-
+ 
 import lombok.Data;
-import lombok.ToString;
 
 /**
  * @author swathy
@@ -37,8 +36,10 @@ import lombok.ToString;
 @Table(name = "user")
 @PasswordMatchConstraint.List({
 		@PasswordMatchConstraint(field = "password", fieldMatch = "confirmPassword", message = "Passwords do not match!") })
-@ToString(exclude = "tokens")
+//@ToString(exclude = "tokens") 
 public class AuthUser {
+
+ 
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -84,13 +85,19 @@ public class AuthUser {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserToken> tokens = new ArrayList<>();
-
-	public AuthUser() {
-
+	
+	 
+	public AuthUser( ) {
+		 
 	}
-
-	public AuthUser(String email, String password) {
+	
+	public AuthUser(String email) {
 		super();
+		this.email = email;
+	}
+	 
+	public AuthUser(String email, String password) {
+		super();	 
 		this.email = email;
 		this.password = password;
 	}
