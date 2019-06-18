@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.genericauthentication.auth.service.AuthenticationService;
 import com.springboot.genericauthentication.exception.EntityFoundException;
 import com.springboot.genericauthentication.exception.MailErrorException;
-import com.springboot.genericauthentication.models.ResponseMessage;
 import com.springboot.genericauthentication.models.AuthUser;
+import com.springboot.genericauthentication.models.ResponseMessage;
 import com.springboot.genericauthentication.token.service.TokenService;
 
 /**
@@ -61,11 +61,11 @@ public class RegistrationController {
 		if (authService.registerUser(user)) {
 			logger.info("Successfully created user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Successfully created account", HttpStatus.CREATED), HttpStatus.CREATED);
+					this.res.setMessage("Successfully created account"), HttpStatus.CREATED);
 		} else {
 			logger.info("Unable to create user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Email id exist.Cannot creat account", HttpStatus.BAD_REQUEST),
+					this.res.setMessage("Email id exist.Cannot creat account"),
 					HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -76,17 +76,18 @@ public class RegistrationController {
 	 * @param token
 	 * @return
 	 */
-	@GetMapping("/")
-	public ResponseEntity<ResponseMessage> activateAccount(@Valid @RequestParam(name = "token") String token) {
-		if (tokenService.validateToken(token)) {
+	@GetMapping("/activate")
+	public ResponseEntity<ResponseMessage> activateAccount(@Valid @RequestParam(name = "token") String token) {		
+		if (tokenService.validateToken(token)) {			 
 			logger.info("Successfully validated token");
+			
 			return new ResponseEntity<ResponseMessage>(this.res
-					.setMessage("Your account has been activated.Please login with your credentials", HttpStatus.OK),
+					.setMessage("Your account has been activated.Please login with your credentials"),
 					HttpStatus.OK);
 		} else {
 			logger.info("Unable to activate user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Your token was expired.Kindly register again", HttpStatus.UNAUTHORIZED),
+					this.res.setMessage("Your token was expired.Kindly register again"),
 					HttpStatus.UNAUTHORIZED);
 		}
 	}
