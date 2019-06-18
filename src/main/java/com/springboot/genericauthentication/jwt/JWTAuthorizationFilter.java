@@ -32,9 +32,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
 		super(authenticationManager);
 	}
-	
+
 	/**
 	 * Function to check if the request has token in the request header.
+	 * 
 	 * @param req,res,chain
 	 */
 	@Override
@@ -54,9 +55,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		chain.doFilter(req, res);
 
 	}
-	
+
 	/**
 	 * Function to authorize the user's token.
+	 * 
 	 * @param req
 	 * @return
 	 */
