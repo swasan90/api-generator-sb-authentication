@@ -22,13 +22,16 @@ public class MailObject {
 	@Email
 	@NotBlank(message = "Email id is mandatory")
 	private String to;
+	
+	private String greeting;
 
 	public MailObject() {
 	};
 
-	public MailObject(String to, String subject, String message) {
+	public MailObject(String to, String subject, String greeting, String message) {
 		this.to = to;
 		this.subject = subject;
+		this.greeting = greeting;
 		this.message = message;
 	}
 
