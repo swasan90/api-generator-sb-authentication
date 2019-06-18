@@ -5,7 +5,6 @@ package com.springboot.genericauthentication.user.service;
 
 import static java.util.Collections.emptyList;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
