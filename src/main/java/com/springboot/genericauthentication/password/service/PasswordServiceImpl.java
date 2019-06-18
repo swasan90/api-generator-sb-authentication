@@ -90,6 +90,7 @@ public class PasswordServiceImpl implements PasswordService {
 	 * @throws IOException
 	 */
 
+	@Override
 	public boolean resetPassword(AuthUser user) throws IOException {
 		try {
 			AuthUser usr = authRepo.findByEmail(user.getEmail());			
