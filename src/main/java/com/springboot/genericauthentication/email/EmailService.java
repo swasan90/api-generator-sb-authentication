@@ -3,11 +3,12 @@
  */
 package com.springboot.genericauthentication.email;
 
-import com.springboot.genericauthentication.exception.MailErrorException;
-
 import java.io.IOException;
 
-import com.sendgrid.*;
+import com.sendgrid.Mail;
+import com.sendgrid.Request;
+import com.sendgrid.SendGrid;
+import com.springboot.genericauthentication.exception.MailErrorException;
 
 /**
  * @author swathy

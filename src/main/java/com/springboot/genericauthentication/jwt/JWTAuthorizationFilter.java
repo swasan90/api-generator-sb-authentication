@@ -4,8 +4,8 @@
 package com.springboot.genericauthentication.jwt;
 
 import static com.springboot.genericauthentication.jwt.SecurityConstants.HEADER_STRING;
-import static com.springboot.genericauthentication.jwt.SecurityConstants.TOKEN_PREFIX;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.SECRET;
+import static com.springboot.genericauthentication.jwt.SecurityConstants.TOKEN_PREFIX;
 
 import java.io.IOException;
 import java.util.ArrayList;

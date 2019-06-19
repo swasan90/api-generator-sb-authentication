@@ -3,11 +3,11 @@
  */
 package com.springboot.genericauthentication.securityConfig;
 
-import static com.springboot.genericauthentication.jwt.SecurityConstants.SIGN_UP_URL;
+import static com.springboot.genericauthentication.jwt.SecurityConstants.ACTIVATE_USER;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.FORGOT_PASSWORD_URL;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.RESET_PASSWORD_URL_PATH;
-import static com.springboot.genericauthentication.jwt.SecurityConstants.ACTIVATE_USER;
- 
+import static com.springboot.genericauthentication.jwt.SecurityConstants.SIGN_UP_URL;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,13 +16,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import com.springboot.genericauthentication.jwt.JWTAuthenticationFilter;
-import com.springboot.genericauthentication.jwt.JWTAuthorizationFilter; 
+import com.springboot.genericauthentication.jwt.JWTAuthorizationFilter;
 import com.springboot.genericauthentication.user.service.UserDetailsServiceImpl;
 
 /**

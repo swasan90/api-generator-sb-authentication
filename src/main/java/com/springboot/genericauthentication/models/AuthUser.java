@@ -20,10 +20,10 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
- 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.genericauthentication.validators.PasswordMatchConstraint;
- 
+
 import lombok.Data;
 
 /**

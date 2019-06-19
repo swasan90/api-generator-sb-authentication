@@ -5,9 +5,7 @@ package com.springboot.genericauthentication.token.service;
 
 import java.net.URI;
 
- 
 import com.sendgrid.Mail;
- 
 import com.springboot.genericauthentication.models.AuthUser;
 
 /**

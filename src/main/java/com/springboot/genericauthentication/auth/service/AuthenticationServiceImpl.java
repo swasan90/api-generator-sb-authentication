@@ -5,6 +5,7 @@ package com.springboot.genericauthentication.auth.service;
 
 import java.io.IOException;
 import java.net.URI;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.sendgrid.Email;
 import com.sendgrid.Mail;
 import com.sendgrid.Request;
@@ -21,7 +23,7 @@ import com.springboot.genericauthentication.email.EmailService;
 import com.springboot.genericauthentication.exception.EntityFoundException;
 import com.springboot.genericauthentication.exception.MailErrorException;
 import com.springboot.genericauthentication.models.AuthUser;
-import com.springboot.genericauthentication.repository.AuthenticationRepository; 
+import com.springboot.genericauthentication.repository.AuthenticationRepository;
 import com.springboot.genericauthentication.token.service.TokenService;
 
 /**
