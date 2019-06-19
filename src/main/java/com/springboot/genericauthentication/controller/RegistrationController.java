@@ -61,11 +61,11 @@ public class RegistrationController {
 		if (authService.registerUser(user)) {
 			logger.info("Successfully created user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Successfully created account"), HttpStatus.CREATED);
+					this.res.setMessage("Successfully created account",true), HttpStatus.CREATED);
 		} else {
 			logger.info("Unable to create user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Email id exist.Cannot creat account"),
+					this.res.setMessage("Email id exist.Cannot creat account",false),
 					HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -82,12 +82,12 @@ public class RegistrationController {
 			logger.info("Successfully validated token");
 			
 			return new ResponseEntity<ResponseMessage>(this.res
-					.setMessage("Your account has been activated.Please login with your credentials"),
+					.setMessage("Your account has been activated.Please login with your credentials",true),
 					HttpStatus.OK);
 		} else {
 			logger.info("Unable to activate user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Your token was expired.Kindly register again"),
+					this.res.setMessage("Your token was expired.Kindly register again",false),
 					HttpStatus.UNAUTHORIZED);
 		}
 	}

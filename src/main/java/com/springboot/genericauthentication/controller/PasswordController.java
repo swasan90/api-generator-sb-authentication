@@ -58,12 +58,12 @@ public class PasswordController {
 		if (passwordService.forgotPassword(user.getEmail())) {
 			logger.info("Forgot password token link has been sent to the user");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Email has been sent to your given email id for resetting password"),
+					this.res.setMessage("Email has been sent to your given email id for resetting password",true),
 					HttpStatus.OK);
 		} else {
 			logger.info("User's email id is not registered /activated");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Email id does not exist (or) you may have not activated your account"),
+					this.res.setMessage("Email id does not exist (or) you may have not activated your account",false),
 					HttpStatus.UNAUTHORIZED);
 		}
 
@@ -89,9 +89,9 @@ public class PasswordController {
 	@PostMapping(value="/reset",consumes="application/json",produces="application/json")
 	public ResponseEntity<ResponseMessage> resetPassword(@RequestBody AuthUser user) throws IOException{
 		if(passwordService.resetPassword(user)) {
-			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Your password has been reset.Kindly login with your new password"),HttpStatus.OK);
+			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Your password has been reset.Kindly login with your new password",true),HttpStatus.OK);
 		}else {
-			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Unable to reset your password."),HttpStatus.FORBIDDEN);
+			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Unable to reset your password.",false),HttpStatus.FORBIDDEN);
 		}
 	}
 }
