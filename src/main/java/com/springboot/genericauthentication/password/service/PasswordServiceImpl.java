@@ -50,7 +50,7 @@ public class PasswordServiceImpl implements PasswordService {
 	public PasswordServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
-	
+
 	/**
 	 * Function to implement forgot password functionality
 	 * 
@@ -82,9 +82,10 @@ public class PasswordServiceImpl implements PasswordService {
 			throw new IOException(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Function to reset user's password
+	 * 
 	 * @param user
 	 * @return
 	 * @throws IOException
@@ -93,14 +94,16 @@ public class PasswordServiceImpl implements PasswordService {
 	@Override
 	public boolean resetPassword(AuthUser user) throws IOException {
 		try {
-			AuthUser usr = authRepo.findByEmail(user.getEmail());			
+			AuthUser usr = authRepo.findByEmail(user.getEmail());
 			if (usr != null) {
-				usr.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+				usr.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));				
 				usr.setConfirmPassword(usr.getPassword());
 				authRepo.save(usr);
+				logger.info("Password reset done for the user " + user.getEmail());
 				return true;
 			}
-			return false;
+			logger.info("User email doesn't exist");
+			return false;			
 		} catch (DataIntegrityViolationException e) {
 			logger.info("Catching Exception during forgot password " + e.getMessage());
 			throw new IOException(e.getMessage());
