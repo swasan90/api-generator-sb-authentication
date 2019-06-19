@@ -3,6 +3,8 @@
  */
 package com.springboot.genericauthentication.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author swathy
  *
@@ -12,14 +14,16 @@ public class ResponseMessage {
 
 	private String message;
 	
+	
 	private boolean status;
 
 	public ResponseMessage() {
 
 	}
 
-	public ResponseMessage setMessage(String message) {
-		this.message = message;		 
+	public ResponseMessage setMessage(String message,boolean status) {
+		this.message = message;		
+		this.status = status;
 		return this;
 	}
 	
