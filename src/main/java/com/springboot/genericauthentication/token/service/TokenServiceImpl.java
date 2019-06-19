@@ -116,11 +116,12 @@ public class TokenServiceImpl implements TokenService {
 	public URI constructTokenUrl(String token, String action) {
 		URI uri = null;
 		if (action.equals("activate")) {
-			uri = ServletUriComponentsBuilder.fromCurrentContextPath().path(action).queryParam("token", token).build()
+			uri = ServletUriComponentsBuilder.fromCurrentContextPath().port(8080).path(action).queryParam("token", token).build()
 					.toUri();
 		} else if (action.equals("reset")) {
-			uri = ServletUriComponentsBuilder.fromCurrentContextPath().path(action).queryParam("token", token).build()
+			uri = ServletUriComponentsBuilder.fromCurrentContextPath().port(8080).path(action).queryParam("token", token).build()
 					.toUri();
+		
 		}
 		return uri;
 	}
