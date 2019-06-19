@@ -21,8 +21,7 @@ import com.springboot.genericauthentication.models.AuthUser;
 import com.springboot.genericauthentication.repository.AuthenticationRepository;
 import com.springboot.genericauthentication.token.service.TokenService;
 
-@ExtendWith(MockitoExtension.class)
-//@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class) 
 class AuthenticationServiceImplUnitTest {
 
 	AuthUser user;
@@ -50,6 +49,8 @@ class AuthenticationServiceImplUnitTest {
 
 	@AfterEach
 	void tearDown() throws Exception {
+		this.bCryptPasswordEncoder =null;
+		this.user = null;
 	}
 	
 	/**
