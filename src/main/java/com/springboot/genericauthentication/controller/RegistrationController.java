@@ -65,7 +65,7 @@ public class RegistrationController {
 		} else {
 			logger.info("Unable to create user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Email id exist.Cannot creat account",false),
+					this.res.setMessage("Email id exist.Cannot create account",false),
 					HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -87,7 +87,7 @@ public class RegistrationController {
 		} else {
 			logger.info("Unable to activate user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Your token was expired.Kindly register again",false),
+					this.res.setMessage("Invalid token.Please provide valid token",false),
 					HttpStatus.UNAUTHORIZED);
 		}
 	}
