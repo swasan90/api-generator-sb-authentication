@@ -143,8 +143,7 @@ public class TokenServiceImpl implements TokenService {
 							+ tokenUrl
 							+ "<p>Kindly note that this link will be activated only for 24 hours from now.<br/><br/><br/>Regards,<br/> Admin Team</p>");
 
-		} else {
-			System.out.println("printing token "+tokenUrl);
+		} else {			
 			mailObj.setSubject("Activate your account on your registration");
 			mailObj.setGreeting("Welcome " + user.getFirstName());
 			mailObj.setMessage(
