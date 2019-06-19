@@ -46,6 +46,8 @@ class PasswordControllerIntegrationTest {
 
 	@AfterEach
 	void tearDown() throws Exception {
+		this.mockMvc = null;
+		this.user = null;
 	}
 	
 	/**
