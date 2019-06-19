@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.springboot.genericauthentication.exception.EntityFoundException;
 import com.springboot.genericauthentication.models.AuthUser;
 import com.springboot.genericauthentication.repository.AuthenticationRepository;
 

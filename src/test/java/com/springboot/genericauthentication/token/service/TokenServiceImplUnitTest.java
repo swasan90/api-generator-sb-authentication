@@ -2,14 +2,9 @@ package com.springboot.genericauthentication.token.service;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +52,7 @@ class TokenServiceImplUnitTest {
 		this.user = null;
 		userToken = null;
 	}
-	
+
 	/**
 	 * Function to validate token returns true
 	 */
@@ -68,7 +63,7 @@ class TokenServiceImplUnitTest {
 		boolean expected = tokenService.validateToken(this.token);
 		assertEquals(expected, true);
 	}
-	
+
 	/**
 	 * Function to validate token that returns false.
 	 */
@@ -79,7 +74,7 @@ class TokenServiceImplUnitTest {
 		boolean expected = tokenService.validateToken(this.token);
 		assertEquals(expected, false);
 	}
-	
+
 	/**
 	 * Function to validate expired token.
 	 */
@@ -102,6 +97,6 @@ class TokenServiceImplUnitTest {
 		String expectedToken = tokenService.generateTokenForUser(this.user);
 		assertEquals(expectedToken.length(), this.token.length());
 		assertNotEquals(expectedToken, this.token);
-	}	
+	}
 
 }
