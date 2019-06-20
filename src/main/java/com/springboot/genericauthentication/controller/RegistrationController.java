@@ -61,7 +61,7 @@ public class RegistrationController {
 		if (authService.registerUser(user)) {
 			logger.info("Successfully created user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Successfully created account",true), HttpStatus.CREATED);
+					this.res.setMessage("Successfully created account.Please check your email",true), HttpStatus.CREATED);
 		} else {
 			logger.info("Unable to create user account");
 			return new ResponseEntity<ResponseMessage>(
