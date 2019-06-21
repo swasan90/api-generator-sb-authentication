@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.genericauthentication.exception.MailErrorException;
 import com.springboot.genericauthentication.models.AuthUser;
+import com.springboot.genericauthentication.models.ResetPassword;
 import com.springboot.genericauthentication.models.ResponseMessage;
 import com.springboot.genericauthentication.password.service.PasswordService;
 import com.springboot.genericauthentication.token.service.TokenService;
@@ -87,8 +88,8 @@ public class PasswordController {
 	 * @throws IOException
 	 */
 	@PostMapping(value="/reset",consumes="application/json",produces="application/json")
-	public ResponseEntity<ResponseMessage> resetPassword(@RequestBody AuthUser user) throws IOException{
-		if(passwordService.resetPassword(user)) {
+	public ResponseEntity<ResponseMessage> resetPassword(@Valid @RequestBody ResetPassword resetPasswordO) throws IOException{
+		if(passwordService.resetPassword(resetPasswordO)) {
 			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Your password has been reset.Kindly login with your new password",true),HttpStatus.OK);
 		}else {
 			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Unable to reset your password.",false),HttpStatus.FORBIDDEN);

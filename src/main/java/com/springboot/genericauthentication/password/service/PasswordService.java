@@ -6,7 +6,7 @@ package com.springboot.genericauthentication.password.service;
 import java.io.IOException;
 
 import com.springboot.genericauthentication.exception.MailErrorException;
-import com.springboot.genericauthentication.models.AuthUser;
+import com.springboot.genericauthentication.models.ResetPassword;
 
 /**
  * @author swathy
@@ -18,6 +18,6 @@ public interface PasswordService {
 	boolean forgotPassword(String email)  throws MailErrorException, IOException;
 	
 	//Function to define reset password method
-	public boolean resetPassword(AuthUser user) throws IOException;
+	public boolean resetPassword(ResetPassword resetPasswordO) throws IOException;
 
 }

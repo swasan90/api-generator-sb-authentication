@@ -21,7 +21,9 @@ import com.sendgrid.SendGrid;
 import com.springboot.genericauthentication.email.EmailService;
 import com.springboot.genericauthentication.exception.MailErrorException;
 import com.springboot.genericauthentication.models.AuthUser;
+import com.springboot.genericauthentication.models.ResetPassword;
 import com.springboot.genericauthentication.repository.AuthenticationRepository;
+import com.springboot.genericauthentication.repository.UserTokenRepository;
 import com.springboot.genericauthentication.token.service.TokenService;
 
 /**
@@ -38,6 +40,9 @@ public class PasswordServiceImpl implements PasswordService {
 
 	@Autowired
 	private TokenService tokenService;
+	
+	@Autowired
+	private UserTokenRepository userTokenRepo;
 
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -92,14 +97,14 @@ public class PasswordServiceImpl implements PasswordService {
 	 */
 
 	@Override
-	public boolean resetPassword(AuthUser user) throws IOException {
-		try {
-			AuthUser usr = authRepo.findByEmail(user.getEmail());
-			if (usr != null) {
-				usr.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));				
+	public boolean resetPassword(ResetPassword resetPassword) throws IOException {		 
+		try {				 		
+			if (userTokenRepo.findByToken(resetPassword.getToken()) != null) {
+				AuthUser usr = userTokenRepo.findByToken(resetPassword.getToken()).getUser();
+				usr.setPassword(bCryptPasswordEncoder.encode(resetPassword.getPassword()));				
 				usr.setConfirmPassword(usr.getPassword());
 				authRepo.save(usr);
-				logger.info("Password reset done for the user " + user.getEmail());
+				logger.info("Password reset done for the user " + usr.getEmail());
 				return true;
 			}
 			logger.info("User email doesn't exist");
