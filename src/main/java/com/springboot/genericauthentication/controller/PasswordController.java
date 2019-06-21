@@ -76,8 +76,8 @@ public class PasswordController {
 	 */
 	@GetMapping(value ="/reset")
 	public ResponseEntity<ResponseMessage> validatePasswordLink(@Valid @RequestParam(name = "token") String token){
-		logger.info("Validating token in forgot password");
-		boolean result = tokenService.validateToken(token);
+		logger.info("Validating token in forgot password");		 
+		boolean result = tokenService.validateToken(token);	 
 		return new ResponseEntity<ResponseMessage>(this.res.setStatus(result),HttpStatus.OK);		
 	}
 	
