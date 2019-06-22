@@ -18,6 +18,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,6 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.genericauthentication.models.AuthUser;
+import com.springboot.genericauthentication.repository.AuthenticationRepository;
 
 /**
  * @author swathy
@@ -37,9 +40,13 @@ import com.springboot.genericauthentication.models.AuthUser;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private AuthenticationRepository authRepo;
 
-	public JWTAuthenticationFilter(AuthenticationManager authManager) {
+	public JWTAuthenticationFilter(AuthenticationManager authManager,ApplicationContext ctx) {
 		this.authenticationManager = authManager;
+		this.authRepo = ctx.getBean(AuthenticationRepository.class);
 	}
 
 	/**
@@ -58,7 +65,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
 
-		} catch (IOException e) {
+		} catch (IOException e) {			
 			throw new RuntimeException(e);
 		}
 
@@ -74,9 +81,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
-
+		AuthUser user = authRepo.findByEmail(auth.getName());		
 		String token = JWT.create().withSubject(((User) auth.getPrincipal()).getUsername())
+				.withClaim("given_name", user.getFirstName()).withClaim("family_name", user.getLastName())
+				.withClaim("email_verified", user.isEnabled()).withClaim("uuid",user.getUuid()).withClaim("status", user.isStatus())
 				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).sign(HMAC512(SECRET.getBytes()));
+		res.addHeader("access-control-expose-headers", "Authorization");
 		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
 	}
 
