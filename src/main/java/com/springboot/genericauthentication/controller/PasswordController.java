@@ -94,5 +94,6 @@ public class PasswordController {
 		}else {
 			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Unable to reset your password.",false),HttpStatus.FORBIDDEN);
 		}
-	}
+	}	
+	 
 }
