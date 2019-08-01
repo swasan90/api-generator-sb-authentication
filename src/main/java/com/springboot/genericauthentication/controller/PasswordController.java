@@ -78,6 +78,7 @@ public class PasswordController {
 	public ResponseEntity<ResponseMessage> validatePasswordLink(@Valid @RequestParam(name = "token") String token){
 		logger.info("Validating token in forgot password");		 
 		boolean result = tokenService.validateToken(token);	 
+		System.out.println(result);
 		return new ResponseEntity<ResponseMessage>(this.res.setStatus(result),HttpStatus.OK);		
 	}
 	
@@ -88,8 +89,8 @@ public class PasswordController {
 	 * @throws IOException
 	 */
 	@PostMapping(value="/reset",consumes="application/json",produces="application/json")
-	public ResponseEntity<ResponseMessage> resetPassword(@Valid @RequestBody ResetPassword resetPasswordO) throws IOException{
-		if(passwordService.resetPassword(resetPasswordO)) {
+	public ResponseEntity<ResponseMessage> resetPassword(@Valid @RequestBody ResetPassword resetPassword) throws IOException{
+		if(passwordService.resetPassword(resetPassword)) {
 			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Your password has been reset.Kindly login with your new password",true),HttpStatus.OK);
 		}else {
 			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Unable to reset your password.",false),HttpStatus.FORBIDDEN);
