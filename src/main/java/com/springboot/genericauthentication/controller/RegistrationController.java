@@ -77,7 +77,7 @@ public class RegistrationController {
 	 * @return
 	 */
 	@GetMapping("/activate")
-	public ResponseEntity<ResponseMessage> activateAccount(@Valid @RequestParam(name = "token") String token) {		
+	public ResponseEntity<ResponseMessage> activateAccount(@Valid @RequestParam(name = "token") String token) {			 
 		if (tokenService.validateToken(token)) {			 
 			logger.info("Successfully validated token");
 			
