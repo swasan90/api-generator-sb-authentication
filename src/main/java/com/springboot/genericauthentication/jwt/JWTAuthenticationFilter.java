@@ -31,6 +31,7 @@ import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.genericauthentication.models.AuthUser;
 import com.springboot.genericauthentication.repository.AuthenticationRepository;
+ 
 
 /**
  * @author swathy
@@ -43,6 +44,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	
 	@Autowired
 	private AuthenticationRepository authRepo;
+	
+//	@Autowired
+//	private RedisRepository redisRepo;
+	
 
 	public JWTAuthenticationFilter(AuthenticationManager authManager,ApplicationContext ctx) {
 		this.authenticationManager = authManager;
@@ -88,6 +93,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).sign(HMAC512(SECRET.getBytes()));
 		res.addHeader("access-control-expose-headers", "Authorization");
 		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+		//this.redisRepo.save(new JwtToken(UUID.fromString(user.getUuid()),token));
 	}
 
 }

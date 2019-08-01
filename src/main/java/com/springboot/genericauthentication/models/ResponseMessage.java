@@ -3,8 +3,6 @@
  */
 package com.springboot.genericauthentication.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * @author swathy
  *

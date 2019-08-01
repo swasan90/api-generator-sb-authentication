@@ -10,6 +10,9 @@ import static com.springboot.genericauthentication.jwt.SecurityConstants.SIGN_UP
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,14 +26,16 @@ import org.springframework.web.filter.CorsFilter;
 
 import com.springboot.genericauthentication.jwt.JWTAuthenticationFilter;
 import com.springboot.genericauthentication.jwt.JWTAuthorizationFilter;
+import com.springboot.genericauthentication.models.JwtToken;
 import com.springboot.genericauthentication.user.service.UserDetailsServiceImpl;
 
 /**
  * @author swathy
  *
  */
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity 
+@EnableRedisRepositories
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private UserDetailsServiceImpl userDetailsService;
@@ -89,5 +94,21 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new CorsFilter(source);
 
 	}
+	
+	@Bean
+	JedisConnectionFactory jedisConnectionFactory() {
+		return new JedisConnectionFactory();
+	}
+	
+	
+	@Bean
+	  RedisTemplate<String, JwtToken> redisTemplate(){
+	    RedisTemplate<String,JwtToken> redisTemplate = new RedisTemplate<String, JwtToken>();
+	    redisTemplate.setConnectionFactory(jedisConnectionFactory());
+	    return redisTemplate;
+	  }
+ 
+	
+	
 
 }
