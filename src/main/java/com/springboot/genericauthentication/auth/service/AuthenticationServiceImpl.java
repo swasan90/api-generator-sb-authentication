@@ -52,6 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Value("${sendgrid.from.mail}")
 	private Email from;
 
+	
 	public AuthenticationServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
@@ -84,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				// Sending email to the new user with the token for more authentication
 				Mail mailObj = tokenService.constructMailBody(newUser, tokenUrl);
 				emailService.sendEmailMessage(mailObj, new Request(), new SendGrid(apiKey));
-				logger.info("Mail sent");
+				logger.trace("Mail sent");
 
 				return true;
 			} else {
@@ -92,7 +93,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				throw new EntityFoundException("Email Id exists.Cannot create duplicate entity.");
 			}
 		} catch (DataIntegrityViolationException e) {
-			logger.info("Catching Exception " + e.getMessage());
+			logger.error("Catching Exception " + e.getMessage());
 			throw new EntityFoundException(e.getMessage());
 		}
 
