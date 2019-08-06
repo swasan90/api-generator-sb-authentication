@@ -3,20 +3,30 @@
  */
 package com.springboot.genericauthentication.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * @author swathy
  *
  */
-
+@JsonInclude(Include.NON_NULL)
 public class ResponseMessage {
 
 	private String message;
 	
 	
 	private boolean status;
+	
+	private JwtToken tokenObj;
 
 	public ResponseMessage() {
 
+	}
+	
+	public ResponseMessage setMessage(JwtToken token) {
+		this.tokenObj = token;
+		return this;
 	}
 
 	public ResponseMessage setMessage(String message,boolean status) {
@@ -37,6 +47,10 @@ public class ResponseMessage {
 
 	public String getMessage() {
 		return message;
+	}
+	
+	public JwtToken getTokenObj() {
+		return tokenObj;
 	}
 
 }
