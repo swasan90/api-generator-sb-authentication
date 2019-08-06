@@ -3,7 +3,7 @@
  */
 package com.springboot.genericauthentication.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.springboot.genericauthentication.models.JwtToken;
@@ -13,6 +13,6 @@ import com.springboot.genericauthentication.models.JwtToken;
  *
  */
 @Repository
-public interface TokenRepository extends JpaRepository<JwtToken, String>{
+public interface RedisRepository extends CrudRepository<JwtToken, String>{
 
 }
