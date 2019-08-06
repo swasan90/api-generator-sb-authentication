@@ -4,15 +4,15 @@
 package com.springboot.genericauthentication.securityConfig;
 
 import static com.springboot.genericauthentication.jwt.SecurityConstants.ACTIVATE_USER;
+import static com.springboot.genericauthentication.jwt.SecurityConstants.DELETE_TOKEN;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.FORGOT_PASSWORD_URL;
+import static com.springboot.genericauthentication.jwt.SecurityConstants.GET_JWT_TOKEN_BY_ID;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.RESET_PASSWORD_URL_PATH;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.SIGN_UP_URL;
+import static com.springboot.genericauthentication.jwt.SecurityConstants.List_All_Tokens;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +26,6 @@ import org.springframework.web.filter.CorsFilter;
 
 import com.springboot.genericauthentication.jwt.JWTAuthenticationFilter;
 import com.springboot.genericauthentication.jwt.JWTAuthorizationFilter;
-import com.springboot.genericauthentication.models.JwtToken;
 import com.springboot.genericauthentication.user.service.UserDetailsServiceImpl;
 
 /**
@@ -35,7 +34,6 @@ import com.springboot.genericauthentication.user.service.UserDetailsServiceImpl;
  */
 @Configuration
 @EnableWebSecurity 
-@EnableRedisRepositories
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private UserDetailsServiceImpl userDetailsService;
@@ -64,6 +62,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.POST,FORGOT_PASSWORD_URL).permitAll()
 				.antMatchers(HttpMethod.GET,RESET_PASSWORD_URL_PATH).permitAll()
 				.antMatchers(HttpMethod.POST,RESET_PASSWORD_URL_PATH).permitAll()
+				.antMatchers(HttpMethod.GET,GET_JWT_TOKEN_BY_ID).permitAll()
+				.antMatchers(HttpMethod.GET,List_All_Tokens).permitAll()
+				.antMatchers(HttpMethod.DELETE,DELETE_TOKEN).permitAll()
 				.anyRequest().authenticated().and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager(),getApplicationContext()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager())).sessionManagement()
@@ -84,6 +85,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);		 
 		config.addAllowedOrigin("http://localhost:4200");
+		config.addAllowedOrigin("http://localhost:4210");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("OPTIONS");
 		config.addAllowedMethod("GET");
@@ -94,21 +96,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new CorsFilter(source);
 
 	}
-	
-	@Bean
-	JedisConnectionFactory jedisConnectionFactory() {
-		return new JedisConnectionFactory();
-	}
-	
-	
-	@Bean
-	  RedisTemplate<String, JwtToken> redisTemplate(){
-	    RedisTemplate<String,JwtToken> redisTemplate = new RedisTemplate<String, JwtToken>();
-	    redisTemplate.setConnectionFactory(jedisConnectionFactory());
-	    return redisTemplate;
-	  }
  
-	
 	
 
 }
