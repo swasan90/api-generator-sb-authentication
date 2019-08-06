@@ -2,19 +2,20 @@
  * Class to define Jwt token
  */
 package com.springboot.genericauthentication.models;
-
-import javax.persistence.Id;
-
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+
+import lombok.Data;
 
 /**
  * @author swathy
  *
  */
  @RedisHash("jwtToken") 
+ @Data
 public class JwtToken  {
 	 
-	 @Id String user_id;
+	@Id private String user_id;
 
 	private String jwtToken;
 	
