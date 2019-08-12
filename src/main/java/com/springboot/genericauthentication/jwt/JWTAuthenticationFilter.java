@@ -95,7 +95,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.withClaim("email_verified", user.isEnabled()).withClaim("uuid",user.getUuid()).withClaim("status", user.isStatus())
 				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).sign(HMAC512(SECRET.getBytes()));
 		res.addHeader("access-control-expose-headers", "Authorization");
-		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);		 
 		this.redisRepo.save(new JwtToken(user.getUuid(),token));		 
 	}
 
