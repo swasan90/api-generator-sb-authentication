@@ -10,6 +10,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
+import com.springboot.genericauthentication.models.JwtToken;
+
 @Configuration
 @EnableRedisRepositories
 public class RedisConfiguration {
@@ -29,18 +31,18 @@ public class RedisConfiguration {
 		return lettuceFactory;
 	}
 
-	@Bean
-	public RedisTemplate<?, ?> redisTemplate() {
-		RedisTemplate<byte[], byte[]> template = new RedisTemplate<>();
-		template.setConnectionFactory(redisConnectionFactory());
-		return template;
-	}
-	
 //	@Bean
-//	  RedisTemplate<String, JwtToken> redisTemplate(){
-//	    RedisTemplate<String,JwtToken> redisTemplate = new RedisTemplate<String, JwtToken>();
-//	    redisTemplate.setConnectionFactory(jedisConnectionFactory());
-//	    return redisTemplate;
-//	  }
-//
+//	public RedisTemplate<?, ?> redisTemplate() {
+//		RedisTemplate<byte[], byte[]> template = new RedisTemplate<>();
+//		template.setConnectionFactory(redisConnectionFactory());
+//		return template;
+//	}
+	
+	@Bean
+	  RedisTemplate<String, JwtToken> redisTemplate(){
+	    RedisTemplate<String,JwtToken> redisTemplate = new RedisTemplate<String, JwtToken>();
+	    redisTemplate.setConnectionFactory(redisConnectionFactory());
+	    return redisTemplate;
+	  }
+
 }
