@@ -113,7 +113,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
-                    <skipITs>true</skipITs>
+                    <excludes>
+						<exclude>**/PasswordControllerIntegrationTest*.java</exclude>
+						<exclude>**/RegistrationControllerIntegrationTest*.java</exclude>
+					</excludes>
                 </configuration>
             </plugin>
 		</plugins>

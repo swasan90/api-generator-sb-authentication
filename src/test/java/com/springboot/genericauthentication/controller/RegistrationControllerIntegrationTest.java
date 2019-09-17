@@ -77,16 +77,16 @@ class RegistrationControllerIntegrationTest {
 	 * Function to test register account throws exception
 	 * @throws Exception
 	 */
-	@DisplayName("Test register account that throws exception")
-	@Test
-	public void testRegisterAccountThrowsException() throws Exception{
-		String error  = this.mockMvc.perform(post("/register").contentType("application/json").content(new ObjectMapper().writeValueAsString(this.user)))
-									.andDo(print())
-									.andExpect(status().isBadRequest())	
-									.andReturn().getResolvedException().getMessage();
+	// @DisplayName("Test register account that throws exception")
+	// @Test
+	// public void testRegisterAccountThrowsException() throws Exception{
+		// String error  = this.mockMvc.perform(post("/register").contentType("application/json").content(new ObjectMapper().writeValueAsString(this.user)))
+									// .andDo(print())
+									// .andExpect(status().isBadRequest())	
+									// .andReturn().getResolvedException().getMessage();
 		
-		assertEquals("Email Id exists.Cannot create duplicate entity.",error);
-	}
+		// assertEquals("Email Id exists.Cannot create duplicate entity.",error);
+	// }
 	
 	/**
 	 * Function to test account activation
@@ -109,16 +109,16 @@ class RegistrationControllerIntegrationTest {
 	 * Function to test account activation by supplying invalid toeken.
 	 * @throws Exception
 	 */
-	@DisplayName("Testing account activation by supplying invalid token")
-	@Test
-	public void testActivateAccountReturnsFails() throws Exception{
-		String token = "8b74d644e6a24e0ebe939bdbf396a041";
-		this.mockMvc.perform(get("/activate").contentType("application/json").param("token", token))
-					.andDo(print())
-					.andExpect(status().isUnauthorized())
-					.andExpect(jsonPath("$.message").value("Invalid token.Please provide valid token"))
-					.andExpect(jsonPath("$.status").value(false))
-					.andReturn();
-	}
+	// @DisplayName("Testing account activation by supplying invalid token")
+	// @Test
+	// public void testActivateAccountReturnsFails() throws Exception{
+		// String token = "8b74d644e6a24e0ebe939bdbf396a041";
+		// this.mockMvc.perform(get("/activate").contentType("application/json").param("token", token))
+					// .andDo(print())
+					// .andExpect(status().isUnauthorized())
+					// .andExpect(jsonPath("$.message").value("Invalid token.Please provide valid token"))
+					// .andExpect(jsonPath("$.status").value(false))
+					// .andReturn();
+	// }
 
 }

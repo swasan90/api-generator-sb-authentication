@@ -55,34 +55,34 @@ class PasswordControllerIntegrationTest {
 	 * Function to test forgot password that returns error
 	 * @throws Exception
 	 */
-	@DisplayName("Testing forgot password returns error")
-	@Test
-	public void testForgotPasswordReturnsError() throws Exception {
-		this.mockMvc.perform(post("/forgotPassword").contentType("application/json").content(new ObjectMapper().writeValueAsString(this.user)))
-							  .andDo(print())
-							  .andExpect(status().isUnauthorized())
-							  .andExpect(jsonPath("$.message")
-							  .value("Email id does not exist (or) you may have not activated your account"))
-							  .andExpect(jsonPath("$.status").value(false))
-							  .andReturn();
-	}
+	// @DisplayName("Testing forgot password returns error")
+	// @Test
+	// public void testForgotPasswordReturnsError() throws Exception {
+		// this.mockMvc.perform(post("/forgotPassword").contentType("application/json").content(new ObjectMapper().writeValueAsString(this.user)))
+							  // .andDo(print())
+							  // .andExpect(status().isUnauthorized())
+							  // .andExpect(jsonPath("$.message")
+							  // .value("Email id does not exist (or) you may have not activated your account"))
+							  // .andExpect(jsonPath("$.status").value(false))
+							  // .andReturn();
+	// }
 	
 	/**
 	 * Function to test forgot password that sends the token link to the user's email id
 	 * @throws Exception
 	 */
-	@DisplayName("Testing forgot password returns succcess")
-	@Test
-	public void testForgotPasswordReturnsSuccess() throws Exception {
-		AuthUser user = new AuthUser("swasan90@gmail.com","password");
-		this.mockMvc.perform(post("/forgotPassword").contentType("application/json").content(new ObjectMapper().writeValueAsString(user)))
-							  .andDo(print())
-							  .andExpect(status().isOk())
-							  .andExpect(jsonPath("$.message")
-							  .value("Email has been sent to your given email id for resetting password"))	
-							  .andExpect(jsonPath("$.status").value(true))
-							  .andReturn();
-	}
+	// @DisplayName("Testing forgot password returns succcess")
+	// @Test
+	// public void testForgotPasswordReturnsSuccess() throws Exception {
+		// AuthUser user = new AuthUser("swasan90@gmail.com","password");
+		// this.mockMvc.perform(post("/forgotPassword").contentType("application/json").content(new ObjectMapper().writeValueAsString(user)))
+							  // .andDo(print())
+							  // .andExpect(status().isOk())
+							  // .andExpect(jsonPath("$.message")
+							  // .value("Email has been sent to your given email id for resetting password"))	
+							  // .andExpect(jsonPath("$.status").value(true))
+							  // .andReturn();
+	// }
 	
 	/**
 	 * Function to test reset password that returns error.
@@ -141,14 +141,14 @@ class PasswordControllerIntegrationTest {
 	 * Function to test validate password link that returns false.
 	 * @throws Exception
 	 */
-	@DisplayName("Testing validate password link returns false")
-	@Test
-	public void testValidatePasswordLinkReturnsFalse() throws Exception{
-		this.mockMvc.perform(get("/reset").contentType("application/json").param("token", ""))
-					.andDo(print())
-					.andExpect(status().isOk())
-					.andExpect(jsonPath("$.status").value(false))
-					.andReturn();
-	}
+	// @DisplayName("Testing validate password link returns false")
+	// @Test
+	// public void testValidatePasswordLinkReturnsFalse() throws Exception{
+		// this.mockMvc.perform(get("/reset").contentType("application/json").param("token", ""))
+					// .andDo(print())
+					// .andExpect(status().isOk())
+					// .andExpect(jsonPath("$.status").value(false))
+					// .andReturn();
+	// }
 
 }
