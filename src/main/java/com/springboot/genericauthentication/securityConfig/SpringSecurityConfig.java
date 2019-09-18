@@ -11,6 +11,7 @@ import static com.springboot.genericauthentication.jwt.SecurityConstants.RESET_P
 import static com.springboot.genericauthentication.jwt.SecurityConstants.SIGN_UP_URL;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.List_All_Tokens;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,6 +39,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private UserDetailsServiceImpl userDetailsService;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Value("${spring.allowed.origin.auth}")
+	private String authclientHost;
+	
+	@Value("${spring.allowed.origin.apigen}")
+	private String apigenclientHost;
 
 	public SpringSecurityConfig(UserDetailsServiceImpl userDetailsService,
 			BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -84,8 +91,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);		 
-		config.addAllowedOrigin("http://localhost:4200");
-		config.addAllowedOrigin("http://localhost:4210");
+		config.addAllowedOrigin(authclientHost);
+		config.addAllowedOrigin(apigenclientHost);
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("OPTIONS");
 		config.addAllowedMethod("GET");
