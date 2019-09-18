@@ -37,4 +37,4 @@ transaction-logs
 secrets.yml
 .gradletasknamecache
 .sts4-cache
-application.dev.properties
+application-dev.properties
