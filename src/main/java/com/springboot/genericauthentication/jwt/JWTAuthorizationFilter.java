@@ -3,8 +3,7 @@
  */
 package com.springboot.genericauthentication.jwt;
 
-import static com.springboot.genericauthentication.jwt.SecurityConstants.HEADER_STRING;
-import static com.springboot.genericauthentication.jwt.SecurityConstants.SECRET;
+import static com.springboot.genericauthentication.jwt.SecurityConstants.HEADER_STRING; 
 import static com.springboot.genericauthentication.jwt.SecurityConstants.TOKEN_PREFIX;
 
 import java.io.IOException;
@@ -15,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +28,9 @@ import com.auth0.jwt.algorithms.Algorithm;
  *
  */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+	
+	@Value("${spring.jwt.secret}")
+	private String secret;
 
 	public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
 		super(authenticationManager);
@@ -65,7 +68,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest req) {
 		String token = req.getHeader(HEADER_STRING);		 
 		if (token != null) {
-			String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes())).build()
+			String user = JWT.require(Algorithm.HMAC512(secret.getBytes())).build()
 					.verify(token.replace(TOKEN_PREFIX, "")).getSubject();
 
 			if (user != null) {

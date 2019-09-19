@@ -6,7 +6,7 @@ package com.springboot.genericauthentication.jwt;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.EXPIRATION_TIME;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.HEADER_STRING;
-import static com.springboot.genericauthentication.jwt.SecurityConstants.SECRET;
+//import static com.springboot.genericauthentication.jwt.SecurityConstants.SECRET;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.TOKEN_PREFIX;
 
 import java.io.IOException;
@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,6 +51,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Autowired
 	private RedisRepository redisRepo;
 	
+	@Value("${spring.jwt.secret}")
+	private String secret;
+	 
 
 	public JWTAuthenticationFilter(AuthenticationManager authManager,ApplicationContext ctx) {
 		this.authenticationManager = authManager;
@@ -93,7 +97,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String token = JWT.create().withSubject(((User) auth.getPrincipal()).getUsername())
 				.withClaim("given_name", user.getFirstName()).withClaim("family_name", user.getLastName())
 				.withClaim("email_verified", user.isEnabled()).withClaim("uuid",user.getUuid()).withClaim("status", user.isStatus())
-				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).sign(HMAC512(SECRET.getBytes()));
+				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).sign(HMAC512(secret.getBytes()));
 		res.addHeader("access-control-expose-headers", "Authorization");
 		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);		 
 		this.redisRepo.save(new JwtToken(user.getUuid(),token));		 
