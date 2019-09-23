@@ -15,19 +15,19 @@ import com.springboot.genericauthentication.models.JwtToken;
 @Configuration
 @EnableRedisRepositories
 public class RedisConfiguration {
-	
+
 	@Value("${spring.redis.host}")
 	private String redisHost;
 
-	
 	@Bean
 	public LettuceConnectionFactory redisConnectionFactory() {
 		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
 		redisStandaloneConfiguration.setHostName(redisHost);
-		
+		System.out.println("printing redis host " + redisStandaloneConfiguration.getHostName());
 		LettuceClientConfigurationBuilder lettuceBuilder = LettuceClientConfiguration.builder();
-		LettuceConnectionFactory lettuceFactory = new LettuceConnectionFactory(
-				redisStandaloneConfiguration,lettuceBuilder.build());
+		LettuceConnectionFactory lettuceFactory = new LettuceConnectionFactory(redisStandaloneConfiguration,
+				lettuceBuilder.build());
+		System.out.println("printing lettuce factory " + lettuceFactory.getClientName());
 		return lettuceFactory;
 	}
 
@@ -37,12 +37,14 @@ public class RedisConfiguration {
 //		template.setConnectionFactory(redisConnectionFactory());
 //		return template;
 //	}
-	
+
 	@Bean
-	  RedisTemplate<String, JwtToken> redisTemplate(){
-	    RedisTemplate<String,JwtToken> redisTemplate = new RedisTemplate<String, JwtToken>();
-	    redisTemplate.setConnectionFactory(redisConnectionFactory());
-	    return redisTemplate;
-	  }
+	RedisTemplate<String, JwtToken> redisTemplate() {
+		RedisTemplate<String, JwtToken> redisTemplate = new RedisTemplate<String, JwtToken>();
+		redisTemplate.setConnectionFactory(redisConnectionFactory());
+		System.out.println("printing redisTemplate " + redisTemplate.getConnectionFactory().getConnection());
+
+		return redisTemplate;
+	}
 
 }
