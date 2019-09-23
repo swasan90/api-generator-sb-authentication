@@ -61,12 +61,12 @@ public class RegistrationController {
 		if (authService.registerUser(user)) {
 			logger.info("Successfully created user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Successfully created account.Please check your email",true), HttpStatus.CREATED);
+					this.res.setMessage("Successfully created account.Please check your email", true),
+					HttpStatus.CREATED);
 		} else {
 			logger.info("Unable to create user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Email id exist.Cannot create account",false),
-					HttpStatus.BAD_REQUEST);
+					this.res.setMessage("Email id exist.Cannot create account", false), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -77,18 +77,17 @@ public class RegistrationController {
 	 * @return
 	 */
 	@GetMapping("/activate")
-	public ResponseEntity<ResponseMessage> activateAccount(@Valid @RequestParam(name = "token") String token) {			 
-		if (tokenService.validateToken(token)) {			 
+	public ResponseEntity<ResponseMessage> activateAccount(@Valid @RequestParam(name = "token") String token) {
+		if (tokenService.validateToken(token)) {
 			logger.info("Successfully validated token");
-			
-			return new ResponseEntity<ResponseMessage>(this.res
-					.setMessage("Your account has been activated.Please login with your credentials",true),
+
+			return new ResponseEntity<ResponseMessage>(
+					this.res.setMessage("Your account has been activated.Please login with your credentials", true),
 					HttpStatus.OK);
 		} else {
 			logger.info("Unable to activate user account");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Invalid token.Please provide valid token",false),
-					HttpStatus.UNAUTHORIZED);
+					this.res.setMessage("Invalid token.Please provide valid token", false), HttpStatus.UNAUTHORIZED);
 		}
 	}
 

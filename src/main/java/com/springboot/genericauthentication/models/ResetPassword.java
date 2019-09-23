@@ -13,20 +13,20 @@ import lombok.Data;
  */
 @Data
 public class ResetPassword {
-	
-	@NotNull(message="token cannot be blank")
+
+	@NotNull(message = "token cannot be blank")
 	private String token;
-	
-	@NotNull(message="password cannot be blank")
+
+	@NotNull(message = "password cannot be blank")
 	private String password;
-	
-	public ResetPassword() {};
-	
-	public ResetPassword(String token,String password) {
+
+	public ResetPassword() {
+	};
+
+	public ResetPassword(String token, String password) {
 		super();
-		this.password =password;
-		this.token =token;
+		this.password = password;
+		this.token = token;
 	}
-	
 
 }

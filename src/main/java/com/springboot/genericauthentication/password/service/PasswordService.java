@@ -13,11 +13,11 @@ import com.springboot.genericauthentication.models.ResetPassword;
  *
  */
 public interface PasswordService {
-	
-	//Function to define forgot password method
-	boolean forgotPassword(String email)  throws MailErrorException, IOException;
-	
-	//Function to define reset password method
+
+	// Function to define forgot password method
+	boolean forgotPassword(String email) throws MailErrorException, IOException;
+
+	// Function to define reset password method
 	public boolean resetPassword(ResetPassword resetPasswordO) throws IOException;
 
 }

@@ -52,7 +52,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Value("${sendgrid.from.mail}")
 	private Email from;
 
-	
 	public AuthenticationServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}

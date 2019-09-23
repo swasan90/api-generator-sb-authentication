@@ -40,7 +40,7 @@ public class PasswordServiceImpl implements PasswordService {
 
 	@Autowired
 	private TokenService tokenService;
-	
+
 	@Autowired
 	private UserTokenRepository userTokenRepo;
 
@@ -97,18 +97,18 @@ public class PasswordServiceImpl implements PasswordService {
 	 */
 
 	@Override
-	public boolean resetPassword(ResetPassword resetPassword) throws IOException {		 
-		try {				 		
+	public boolean resetPassword(ResetPassword resetPassword) throws IOException {
+		try {
 			if (userTokenRepo.findByToken(resetPassword.getToken()) != null) {
 				AuthUser usr = userTokenRepo.findByToken(resetPassword.getToken()).getUser();
-				usr.setPassword(bCryptPasswordEncoder.encode(resetPassword.getPassword()));				
+				usr.setPassword(bCryptPasswordEncoder.encode(resetPassword.getPassword()));
 				usr.setConfirmPassword(usr.getPassword());
 				authRepo.save(usr);
 				logger.info("Password reset done for the user " + usr.getEmail());
 				return true;
 			}
 			logger.info("User email doesn't exist");
-			return false;			
+			return false;
 		} catch (DataIntegrityViolationException e) {
 			logger.info("Catching Exception during forgot password " + e.getMessage());
 			throw new IOException(e.getMessage());

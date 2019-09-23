@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class GenericAuthenticationApplication {
-	
+
 	/**
 	 * Instantiating BCryptPasswordEncoder bean
 	 * 
@@ -17,12 +17,10 @@ public class GenericAuthenticationApplication {
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
-	}	 
-	
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(GenericAuthenticationApplication.class, args);
 	}
 
-	
-	
 }

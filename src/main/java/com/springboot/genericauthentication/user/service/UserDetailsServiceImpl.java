@@ -25,9 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetailsServiceImpl(AuthenticationRepository authRepo) {
 		this.authRepo = authRepo;
 	}
-	
+
 	/**
-	 * Function to validate if the user exist 
+	 * Function to validate if the user exist
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

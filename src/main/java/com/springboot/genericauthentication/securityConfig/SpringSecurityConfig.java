@@ -7,9 +7,9 @@ import static com.springboot.genericauthentication.jwt.SecurityConstants.ACTIVAT
 import static com.springboot.genericauthentication.jwt.SecurityConstants.DELETE_TOKEN;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.FORGOT_PASSWORD_URL;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.GET_JWT_TOKEN_BY_ID;
+import static com.springboot.genericauthentication.jwt.SecurityConstants.List_All_Tokens;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.RESET_PASSWORD_URL_PATH;
 import static com.springboot.genericauthentication.jwt.SecurityConstants.SIGN_UP_URL;
-import static com.springboot.genericauthentication.jwt.SecurityConstants.List_All_Tokens;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,15 +34,15 @@ import com.springboot.genericauthentication.user.service.UserDetailsServiceImpl;
  *
  */
 @Configuration
-@EnableWebSecurity 
+@EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private UserDetailsServiceImpl userDetailsService;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Value("${spring.allowed.origin.auth}")
 	private String authclientHost;
-	
+
 	@Value("${spring.allowed.origin.apigen}")
 	private String apigenclientHost;
 
@@ -64,16 +64,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.GET, "/").permitAll()
-				.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-				.antMatchers(HttpMethod.GET, ACTIVATE_USER).permitAll()
-				.antMatchers(HttpMethod.POST,FORGOT_PASSWORD_URL).permitAll()
-				.antMatchers(HttpMethod.GET,RESET_PASSWORD_URL_PATH).permitAll()
-				.antMatchers(HttpMethod.POST,RESET_PASSWORD_URL_PATH).permitAll()
-				.antMatchers(HttpMethod.GET,GET_JWT_TOKEN_BY_ID).permitAll()
-				.antMatchers(HttpMethod.GET,List_All_Tokens).permitAll()
-				.antMatchers(HttpMethod.DELETE,DELETE_TOKEN).permitAll()
-				.anyRequest().authenticated().and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager(),getApplicationContext()))
+				.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll().antMatchers(HttpMethod.GET, ACTIVATE_USER)
+				.permitAll().antMatchers(HttpMethod.POST, FORGOT_PASSWORD_URL).permitAll()
+				.antMatchers(HttpMethod.GET, RESET_PASSWORD_URL_PATH).permitAll()
+				.antMatchers(HttpMethod.POST, RESET_PASSWORD_URL_PATH).permitAll()
+				.antMatchers(HttpMethod.GET, GET_JWT_TOKEN_BY_ID).permitAll()
+				.antMatchers(HttpMethod.GET, List_All_Tokens).permitAll().antMatchers(HttpMethod.DELETE, DELETE_TOKEN)
+				.permitAll().anyRequest().authenticated().and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager(), getApplicationContext()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager())).sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -90,7 +88,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);		 
+		config.setAllowCredentials(true);
 		config.addAllowedOrigin(authclientHost);
 		config.addAllowedOrigin(apigenclientHost);
 		config.addAllowedHeader("*");
@@ -103,7 +101,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new CorsFilter(source);
 
 	}
- 
-	
 
 }

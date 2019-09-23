@@ -13,6 +13,6 @@ import com.springboot.genericauthentication.models.JwtToken;
  *
  */
 @Repository
-public interface RedisRepository extends CrudRepository<JwtToken, String>{
+public interface RedisRepository extends CrudRepository<JwtToken, String> {
 
 }

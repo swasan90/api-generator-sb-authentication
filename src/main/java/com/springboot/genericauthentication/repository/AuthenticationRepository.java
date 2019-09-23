@@ -15,9 +15,9 @@ import com.springboot.genericauthentication.models.AuthUser;
 @Repository
 public interface AuthenticationRepository extends JpaRepository<AuthUser, Long> {
 
-	//Function declaration to find user by email
+	// Function declaration to find user by email
 	AuthUser findByEmail(String email);
-	
-	//Function declaration to find user by id
+
+	// Function declaration to find user by id
 	AuthUser findById(long id);
 }

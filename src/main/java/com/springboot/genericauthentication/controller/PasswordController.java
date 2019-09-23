@@ -24,7 +24,7 @@ import com.springboot.genericauthentication.models.ResetPassword;
 import com.springboot.genericauthentication.models.ResponseMessage;
 import com.springboot.genericauthentication.password.service.PasswordService;
 import com.springboot.genericauthentication.token.service.TokenService;
- 
+
 /**
  * @author swathy
  *
@@ -32,11 +32,11 @@ import com.springboot.genericauthentication.token.service.TokenService;
 @RestController
 public class PasswordController {
 
-	private  Logger logger = LoggerFactory.getLogger(PasswordController.class);
-	
+	private Logger logger = LoggerFactory.getLogger(PasswordController.class);
+
 	@Autowired
 	private PasswordService passwordService;
-	
+
 	@Autowired
 	private TokenService tokenService;
 
@@ -48,6 +48,7 @@ public class PasswordController {
 
 	/**
 	 * Function to implement the forgot password process
+	 * 
 	 * @param user
 	 * @return
 	 * @throws MailErrorException
@@ -59,42 +60,49 @@ public class PasswordController {
 		if (passwordService.forgotPassword(user.getEmail())) {
 			logger.info("Forgot password token link has been sent to the user");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Email has been sent to your given email id for resetting password",true),
+					this.res.setMessage("Email has been sent to your given email id for resetting password", true),
 					HttpStatus.OK);
 		} else {
 			logger.info("User's email id is not registered /activated");
 			return new ResponseEntity<ResponseMessage>(
-					this.res.setMessage("Email id does not exist (or) you may have not activated your account",false),
+					this.res.setMessage("Email id does not exist (or) you may have not activated your account", false),
 					HttpStatus.UNAUTHORIZED);
 		}
 
 	}
+
 	/**
 	 * Function to validate the user's password token link.
+	 * 
 	 * @param token
 	 * @return boolean
 	 */
-	@GetMapping(value ="/reset")
-	public ResponseEntity<ResponseMessage> validatePasswordLink(@Valid @RequestParam(name = "token") String token){
-		logger.info("Validating token in forgot password");		 
-		boolean result = tokenService.validateToken(token);	 
+	@GetMapping(value = "/reset")
+	public ResponseEntity<ResponseMessage> validatePasswordLink(@Valid @RequestParam(name = "token") String token) {
+		logger.info("Validating token in forgot password");
+		boolean result = tokenService.validateToken(token);
 		System.out.println(result);
-		return new ResponseEntity<ResponseMessage>(this.res.setStatus(result),HttpStatus.OK);		
+		return new ResponseEntity<ResponseMessage>(this.res.setStatus(result), HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Function to reset the user's password .
+	 * 
 	 * @param user
 	 * @return ResponseEntity
 	 * @throws IOException
 	 */
-	@PostMapping(value="/reset",consumes="application/json",produces="application/json")
-	public ResponseEntity<ResponseMessage> resetPassword(@Valid @RequestBody ResetPassword resetPassword) throws IOException{
-		if(passwordService.resetPassword(resetPassword)) {
-			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Your password has been reset.Kindly login with your new password",true),HttpStatus.OK);
-		}else {
-			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Unable to reset your password.",false),HttpStatus.FORBIDDEN);
+	@PostMapping(value = "/reset", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<ResponseMessage> resetPassword(@Valid @RequestBody ResetPassword resetPassword)
+			throws IOException {
+		if (passwordService.resetPassword(resetPassword)) {
+			return new ResponseEntity<ResponseMessage>(
+					this.res.setMessage("Your password has been reset.Kindly login with your new password", true),
+					HttpStatus.OK);
+		} else {
+			return new ResponseEntity<ResponseMessage>(this.res.setMessage("Unable to reset your password.", false),
+					HttpStatus.FORBIDDEN);
 		}
-	}	
-	 
+	}
+
 }

@@ -1,7 +1,5 @@
 package com.springboot.genericauthentication.redis.service;
 
-import java.util.List;
-
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +10,17 @@ import com.springboot.genericauthentication.repository.RedisRepository;
 
 @Service("redisService")
 public class RedisServiceImpl implements RedisService {
-	
+
 	@Autowired
 	private RedisRepository redisRepository;
 
 	@Override
 	public void deleteUserToken(String id) throws Exception {
 		try {
-			if(this.findTokenById(id) !=null) {
+			if (this.findTokenById(id) != null) {
 				this.redisRepository.deleteById(id);
 			}
-		}catch(EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) {
 			throw new Exception(e.getMessage());
 		}
 	}
@@ -42,7 +40,5 @@ public class RedisServiceImpl implements RedisService {
 	public Iterable<JwtToken> listAll() {
 		return this.redisRepository.findAll();
 	}
-	
-	
 
 }

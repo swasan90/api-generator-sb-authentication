@@ -22,7 +22,7 @@ public class MailObject {
 	@Email
 	@NotBlank(message = "Email id is mandatory")
 	private String to;
-	
+
 	private String greeting;
 
 	public MailObject() {

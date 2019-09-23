@@ -24,9 +24,10 @@ import com.springboot.genericauthentication.exception.MailErrorException;
 public class EmailServiceImpl implements EmailService {
 
 	private Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
-	
+
 	/**
 	 * Function to implement send email message.
+	 * 
 	 * @param Mail, Request,SendGrid
 	 * 
 	 */

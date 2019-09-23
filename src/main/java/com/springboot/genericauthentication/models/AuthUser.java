@@ -39,8 +39,6 @@ import lombok.Data;
 //@ToString(exclude = "tokens") 
 public class AuthUser {
 
- 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
@@ -85,19 +83,18 @@ public class AuthUser {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserToken> tokens = new ArrayList<>();
-	
-	 
-	public AuthUser( ) {
-		 
+
+	public AuthUser() {
+
 	}
-	
+
 	public AuthUser(String email) {
 		super();
 		this.email = email;
 	}
-	 
+
 	public AuthUser(String email, String password) {
-		super();	 
+		super();
 		this.email = email;
 		this.password = password;
 	}
