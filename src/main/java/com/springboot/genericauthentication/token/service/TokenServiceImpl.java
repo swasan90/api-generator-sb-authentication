@@ -11,7 +11,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sendgrid.Content;
 import com.sendgrid.Email;
@@ -40,6 +40,9 @@ public class TokenServiceImpl implements TokenService {
 
 	@Value("${sendgrid.from.mail}")
 	private Email from;
+	
+	@Value("${spring.allowed.origin.auth}")
+	private String clientUrl;
 
 	/***
 	 * Function to validate user's token.
@@ -63,10 +66,10 @@ public class TokenServiceImpl implements TokenService {
 		if (userToken != null) {
 			Instant current = Instant.now();
 			if (userToken.getExpirationDate().isAfter(current)) {
-				AuthUser user = authRepo.findById(userToken.getUser().getId());			 
-				if (user != null && !user.isEnabled()) {					 
-					activateUser(user);					
-				}	
+				AuthUser user = authRepo.findById(userToken.getUser().getId());
+				if (user != null && !user.isEnabled()) {
+					activateUser(user);
+				}
 				return true;
 			}
 		}
@@ -114,14 +117,14 @@ public class TokenServiceImpl implements TokenService {
 	 */
 	@Override
 	public URI constructTokenUrl(String token, String action) {
-		URI uri = null;
-		if (action.equals("activate")) {
-			uri = ServletUriComponentsBuilder.fromCurrentContextPath().port(4200).path("password/").path(action).queryParam("token", token).build()
-					.toUri();
+		URI uri =null;
+		if (action.equals("activate")) { 
+			uri = UriComponentsBuilder.fromUriString(clientUrl).path("password/").path(action).queryParam("token", token).build().toUri();
+			 
 		} else if (action.equals("reset")) {
-			uri = ServletUriComponentsBuilder.fromCurrentContextPath().port(4200).path("password/").path(action).queryParam("token", token).build()
-					.toUri();
+			uri = UriComponentsBuilder.fromUriString(clientUrl).path("password/").path(action).queryParam("token", token).build().toUri();
 		}
+		System.out.println("printing url"+uri);
 		return uri;
 	}
 
@@ -143,7 +146,7 @@ public class TokenServiceImpl implements TokenService {
 							+ tokenUrl
 							+ "<p>Kindly note that this link will be activated only for 24 hours from now.<br/><br/><br/>Regards,<br/> Admin Team</p>");
 
-		} else {			
+		} else {
 			mailObj.setSubject("Activate your account on your registration");
 			mailObj.setGreeting("Welcome " + user.getFirstName());
 			mailObj.setMessage(
