@@ -22,12 +22,10 @@ public class RedisConfiguration {
 	@Bean
 	public LettuceConnectionFactory redisConnectionFactory() {
 		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-		redisStandaloneConfiguration.setHostName(redisHost);
-		System.out.println("printing redis host " + redisStandaloneConfiguration.getHostName());
+		redisStandaloneConfiguration.setHostName(redisHost);		 
 		LettuceClientConfigurationBuilder lettuceBuilder = LettuceClientConfiguration.builder();
 		LettuceConnectionFactory lettuceFactory = new LettuceConnectionFactory(redisStandaloneConfiguration,
-				lettuceBuilder.build());
-		System.out.println("printing lettuce factory " + lettuceFactory.getClientName());
+				lettuceBuilder.build());		 
 		return lettuceFactory;
 	}
 
@@ -42,8 +40,6 @@ public class RedisConfiguration {
 	RedisTemplate<String, JwtToken> redisTemplate() {
 		RedisTemplate<String, JwtToken> redisTemplate = new RedisTemplate<String, JwtToken>();
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
-		System.out.println("printing redisTemplate " + redisTemplate.getConnectionFactory().getConnection());
-
 		return redisTemplate;
 	}
 
